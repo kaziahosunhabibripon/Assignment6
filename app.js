@@ -15,6 +15,7 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // show images 
 const showImages = (images) => {
+  toggleSpinner();
   imagesArea.style.display = 'block';
   gallery.innerHTML = '';
   // show gallery title
@@ -25,7 +26,7 @@ const showImages = (images) => {
     div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
     gallery.appendChild(div)
   })
-  toggleSpinner();
+  
   
 }
 
@@ -37,7 +38,7 @@ const getImages = async(query) => {
     showImages(data.hits);
     document.getElementById("search").value='';
   }
-  catch(err){
+  catch(err) {
     console.log(err);
     toggleSpinner();
     
@@ -63,13 +64,14 @@ let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
   element.classList.toggle('added');
- 
+
   let item = sliders.indexOf(img);
   if (item === -1) {
     sliders.push(img);
-  } else{
-    delete sliders[item];
-    element.classList.toggle('added');
+  } 
+  else{
+    sliders = sliders.filter((element, index, newSliders) => index != newSliders.indexOf(img));
+    element.classList.remove('added');
   }
 }
 
@@ -169,4 +171,4 @@ number.onkeydown = function(e) {
       || e.keyCode == 8)) {
         return false;
     }
-}
+  }
