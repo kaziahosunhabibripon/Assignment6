@@ -25,24 +25,36 @@ const showImages = (images) => {
     div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
     gallery.appendChild(div)
   })
-
+  toggleSpinner(false);
 }
 
-const getImages = (query) => {
-  fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
-    .then(response => response.json())
-    .then(data => showImages(data.hits))
-    .catch(err => console.log(err))
+const getImages = async(query) => {
+  toggleSpinner(true);
+  try{
+    const res = await fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`);
+    const data = await res.json();
+    showImages(data.hits);
     document.getElementById("search").value='';
+  }
+  catch(err){
+    console.log(err);
+  }
+  
 }
 
-// Enter key function
+// Enter key function for search box
 document.getElementById("search").addEventListener("keypress", function(event){
   if(event.key == "Enter"){
     document.getElementById("search-btn").click(); 
   }
 })
 
+// Enter key function for slide range duration
+document.getElementById("duration").addEventListener("keyup", function(event){
+  if(event.keyCode === 13){
+    document.getElementById("create-slider").click(); 
+  }
+})
 let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
@@ -83,7 +95,7 @@ const createSlider = () => {
     item.innerHTML = `<img class="w-100"
     src="${slide}"
     alt="">`;
-    sliderContainer.appendChild(item)
+    sliderContainer.appendChild(item);
   
   })
   
@@ -131,3 +143,21 @@ searchBtn.addEventListener('click', function () {
 sliderBtn.addEventListener('click', function () {
   createSlider()
 })
+
+const toggleSpinner = (show) => {
+  const spinner = document.getElementById('loading-spinner');
+  spinner.classList.toggle('d-none');
+}
+
+
+// function for input only number
+var number = document.getElementById('duration');
+
+// Listen for input event on numInput.
+number.onkeydown = function(e) {
+    if(!((e.keyCode > 95 && e.keyCode < 106)
+      || (e.keyCode > 47 && e.keyCode < 58) 
+      || e.keyCode == 8)) {
+        return false;
+    }
+}
