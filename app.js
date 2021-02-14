@@ -25,11 +25,12 @@ const showImages = (images) => {
     div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
     gallery.appendChild(div)
   })
-  toggleSpinner(false);
+  toggleSpinner();
+  
 }
 
 const getImages = async(query) => {
-  toggleSpinner(true);
+  toggleSpinner();
   try{
     const res = await fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`);
     const data = await res.json();
@@ -38,6 +39,8 @@ const getImages = async(query) => {
   }
   catch(err){
     console.log(err);
+    toggleSpinner();
+    
   }
   
 }
@@ -64,7 +67,10 @@ const selectItem = (event, img) => {
   let item = sliders.indexOf(img);
   if (item === -1) {
     sliders.push(img);
-  } 
+  } else{
+    delete sliders[item];
+    element.classList.toggle('added');
+  }
 }
 
 var timer
@@ -74,6 +80,9 @@ const createSlider = () => {
     alert('Select at least 2 image.')
     return;
   }
+
+  const duration = document.getElementById("duration").value;
+  if(duration >=1000){
   // crate slider previous next area
   sliderContainer.innerHTML = '';
   const prevNext = document.createElement('div');
@@ -85,9 +94,10 @@ const createSlider = () => {
 
   sliderContainer.appendChild(prevNext)
   document.querySelector('.main').style.display = 'block';
+
   // hide image aria
   imagesArea.style.display = 'none';
-  const duration = document.getElementById('duration').value || 1000;
+
   sliders.forEach(slide => {
     let item = document.createElement('div')
     item.className = "slider-item";
@@ -104,7 +114,7 @@ const createSlider = () => {
     changeSlide(slideIndex);
   }, duration);
 }
-
+}
 // change slider index 
 const changeItem = index => {
   changeSlide(slideIndex += index);
@@ -140,10 +150,10 @@ searchBtn.addEventListener('click', function () {
 })
 
 sliderBtn.addEventListener('click', function () {
-  createSlider()
+  createSlider();
 })
 
-const toggleSpinner = (show) => {
+const toggleSpinner = () => {
   const spinner = document.getElementById('loading-spinner');
   spinner.classList.toggle('d-none');
 }
