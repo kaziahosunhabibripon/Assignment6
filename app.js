@@ -64,9 +64,7 @@ const selectItem = (event, img) => {
   let item = sliders.indexOf(img);
   if (item === -1) {
     sliders.push(img);
-  } else {
-    alert('Do you want to remove it from your selection !')
-  }
+  } 
 }
 
 var timer
