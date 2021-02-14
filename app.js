@@ -33,7 +33,15 @@ const getImages = (query) => {
     .then(response => response.json())
     .then(data => showImages(data.hits))
     .catch(err => console.log(err))
+    document.getElementById("search").value='';
 }
+
+// Enter key function
+document.getElementById("search").addEventListener("keypress", function(event){
+  if(event.key == "Enter"){
+    document.getElementById("search-btn").click(); 
+  }
+})
 
 let slideIndex = 0;
 const selectItem = (event, img) => {
@@ -67,7 +75,7 @@ const createSlider = () => {
   document.querySelector('.main').style.display = 'block';
   // hide image aria
   imagesArea.style.display = 'none';
-  const duration = document.getElementById('sliders').value || 1000;
+  const duration = document.getElementById('duration').value || 1000;
   sliders.forEach(slide => {
     let item = document.createElement('div')
     item.className = "slider-item";
@@ -75,7 +83,9 @@ const createSlider = () => {
     src="${slide}"
     alt="">`;
     sliderContainer.appendChild(item)
+  
   })
+  
   changeSlide(0)
   timer = setInterval(function () {
     slideIndex++;
