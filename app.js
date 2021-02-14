@@ -23,13 +23,22 @@ const showImages = (images) => {
   images.forEach(image => {
     let div = document.createElement('div');
     div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
-    div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
+    div.innerHTML = ` 
+    <div class="img-fluid">
+      <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">
+        <h6 class="p-2 text-center"> ${image.tags} </h6>
+        <span class="p-2 text-left"> comments: ${image.comments} </span>
+        <span class="p-2 text-left">favorites: ${image.favorites}</span>
+        <span class="p-2 text-left">likes: ${image.likes}</span>
+        <span class="p-2 text-left"> Downloads: ${image.downloads}</span>
+      </div>
+      
+    `;
     gallery.appendChild(div)
   })
   
   
 }
-
 const getImages = async(query) => {
   toggleSpinner();
   try{
@@ -40,8 +49,7 @@ const getImages = async(query) => {
   }
   catch(err) {
     console.log(err);
-    toggleSpinner();
-    
+    toggleSpinner();  
   }
   
 }
