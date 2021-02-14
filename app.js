@@ -43,11 +43,11 @@ const getImages = async(query) => {
 }
 
 // Enter key function for search box
-document.getElementById("search").addEventListener("keypress", function(event){
-  if(event.key == "Enter"){
-    document.getElementById("search-btn").click(); 
-  }
-})
+  document.getElementById("search").addEventListener("keypress", function(event){
+    if(event.key == "Enter"){
+      document.getElementById("search-btn").click(); 
+    }
+  } ) 
 
 // Enter key function for slide range duration
 document.getElementById("duration").addEventListener("keyup", function(event){
@@ -55,6 +55,7 @@ document.getElementById("duration").addEventListener("keyup", function(event){
     document.getElementById("create-slider").click(); 
   }
 })
+
 let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
@@ -153,7 +154,7 @@ const toggleSpinner = (show) => {
 // function for input only number
 var number = document.getElementById('duration');
 
-// Listen for input event on numInput.
+//  input event on numInput.
 number.onkeydown = function(e) {
     if(!((e.keyCode > 95 && e.keyCode < 106)
       || (e.keyCode > 47 && e.keyCode < 58) 
